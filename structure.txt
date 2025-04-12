@@ -1,0 +1,24 @@
+/stock-dashboard-app
+│
+├── app/                         # GUI code (Flet)
+│   ├── __init__.py
+│   ├── main.py                  # Entry point (runs GUI)
+│   ├── views.py                 # Pages/screens layout
+│   └── components.py            # Buttons, forms, graphs
+│
+├── core/                        # Core logic
+│   ├── __init__.py
+│   ├── stock_api.py             # Fetch live data (yfinance)
+│   ├── predictor.py             # ML model (linear regression)
+│   └── utils.py                 # Helpers (e.g., format prices)
+│
+├── tests/                       # Unit tests
+│   ├── test_stock_api.py
+│   ├── test_predictor.py
+│   └── test_utils.py
+│
+├── requirements.txt             # Python libraries
+├── README.md                    # Project overview
+├── .gitignore                   # Ignore build/ and __pycache__/
+├── .github/workflows/ci.yml     # GitHub Actions CI/CD
+└── setup.py                     # (optional) app metadata

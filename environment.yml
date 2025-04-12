@@ -1,0 +1,15 @@
+name: stock-dashboard-app
+channels:
+  - defaults
+  - conda-forge
+
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - flet
+      - yfinance
+      - scikit-learn
+      - matplotlib
+      - pytest
+      - pyinstaller
