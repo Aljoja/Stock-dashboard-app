@@ -9,8 +9,11 @@
 ├── core/                        # Core logic
 │   ├── __init__.py
 │   ├── stock_api.py             # Fetch live data (yfinance)
+│   ├── plotter.py
 │   ├── predictor.py             # ML model (linear regression)
 │   └── utils.py                 # Helpers (e.g., format prices)
+│
+├── plots/
 │
 ├── tests/                       # Unit tests
 │   ├── __init__.py

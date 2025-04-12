@@ -1,5 +1,7 @@
 import flet as ft
 from core.stock_api import fetch_stock_data
+from core.plotter import plot_stock_data
+import os
 
 def main(page: ft.Page):
     """
@@ -38,6 +40,13 @@ def main(page: ft.Page):
         text_align="center",
     )
 
+    plot_image = ft.Image(
+    src="",  # Empty at the start
+    width=600,
+    height=400,
+    fit=ft.ImageFit.CONTAIN,
+    )   
+
     def fetch_data_click(event):
         """
         Event handler for the 'Fetch Stock Data' button.
@@ -62,6 +71,17 @@ def main(page: ft.Page):
             
             # Update result text
             result_text.value = f"Latest closing price for {ticker}: ${latest_close:.2f}"
+
+            # Plot stock data
+            plot_path = plot_stock_data(data, ticker)
+
+            # Check if image already exists and remove
+            if plot_image.src:
+                page.controls.remove(plot_image)
+
+            # Create new image control
+            plot_image.src = plot_path
+            page.add(plot_image)
             page.update()
 
         except Exception as e:
@@ -75,24 +95,10 @@ def main(page: ft.Page):
         on_click = fetch_data_click
     )
 
-    # Chart placeholder
-    chart_placeholder = ft.Container(
-        content=ft.Text(
-            "📊 Chart will appear here...",
-            text_align="center",
-            style="bodyMedium",
-        ),
-        width=600,
-        height=300,
-        border=ft.border.all(1, ft.colors.GREY),
-        alignment=ft.alignment.center,
-    )
-
     # Add all elements to the page
     page.add(
         title,
         ft.Row([ticker_input, fetch_button], alignment="center"),
-        chart_placeholder,
         result_text,
     )
 
