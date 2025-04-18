@@ -13,7 +13,8 @@ def main():
 
     app = QApplication(sys.argv)          # Create the application instance
     window = StockDashboard()             # Create the main dashboard window
-    window.show()                         # Show the window
+    window.showMaximized()  # ✅ This makes the window fill the screen without hiding the taskbar
+    # window.show()                         # Show the window
     sys.exit(app.exec_())                 # Start the event loop
 
 if __name__ == "__main__":
