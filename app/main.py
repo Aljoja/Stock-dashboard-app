@@ -1,110 +1,20 @@
-import flet as ft
-from core.stock_api import fetch_stock_data
-from core.plotter import plot_stock_data
-import os
+import sys
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from app.ui import StockDashboard
 
-def main(page: ft.Page):
+def main():
     """
-    Main function to initialize and run the Stock Dashboard App GUI.
-    
-    Args:
-        page (flet.Page): The Flet page object representing the app window.
+    Entry point for the Stock Dashboard application.
+
+    Initializes the PyQt application, creates the main window,
+    and starts the event loop.
     """
-        
-    # Set page properties
-    page.title = "📈 Stock Dashboard App"
-    page.theme_mode = ft.ThemeMode.DARK  # or LIGHT
-    page.window_width = 800
-    page.window_height = 600
-    page.padding = 20
-    page.spacing = 20
 
-    # App title
-    title = ft.Text(
-        value="Welcome to Stock Dashboard!",
-        style="headlineMedium",
-        text_align="center",
-    )
+    app = QApplication(sys.argv)          # Create the application instance
+    window = StockDashboard()             # Create the main dashboard window
+    window.show()                         # Show the window
+    sys.exit(app.exec_())                 # Start the event loop
 
-    # Input field for stock ticker
-    ticker_input = ft.TextField(
-        label="Enter Stock Ticker (e.g., AAPL)",
-        width=300,
-        autofocus=True,
-    )
-
-    # Result text (to update later)
-    result_text = ft.Text(
-        value="",
-        style="titleMedium",
-        text_align="center",
-    )
-
-    plot_image = ft.Image(
-    src="",  # Empty at the start
-    width=600,
-    height=400,
-    fit=ft.ImageFit.CONTAIN,
-    )   
-
-    def fetch_data_click(event):
-        """
-        Event handler for the 'Fetch Stock Data' button.
-        Fetches stock data for the given ticker and updates the result text.
-
-        Args:
-            event (flet.ControlEvent): The event triggered by button click.
-        """
-        ticker = ticker_input.value.strip().upper()
-
-        if not ticker:
-            page.snack_bar = ft.SnackBar(ft.Text("Please enter a stock ticker!"))
-            page.snack_bar.open()
-            return
-        
-        try:
-            # Fetch stock data
-            data = fetch_stock_data(ticker)
-            
-            # Get the latest closing price
-            latest_close = data["Close"].iloc[-1]
-            
-            # Update result text
-            result_text.value = f"Latest closing price for {ticker}: ${latest_close:.2f}"
-
-            # Plot stock data
-            plot_path = plot_stock_data(data, ticker)
-
-            # Check if image already exists and remove
-            if plot_image.src:
-                page.controls.remove(plot_image)
-
-            # Create new image control
-            plot_image.src = plot_path
-            page.add(plot_image)
-            page.update()
-
-        except Exception as e:
-            page.snack_bar = ft.SnackBar(ft.Text(f"Error: {e}"))
-            page.snack_bar.open()
-
-
-    # Button to fetch stock data
-    fetch_button = ft.ElevatedButton(
-        text="Fetch Stock Data",
-        on_click = fetch_data_click
-    )
-
-    # Add all elements to the page
-    page.add(
-        title,
-        ft.Row([ticker_input, fetch_button], alignment="center"),
-        result_text,
-    )
-
-# Run the app
 if __name__ == "__main__":
-    """
-    Entry point for running the Flet application.
-    """
-    ft.app(target=main)
+    main()

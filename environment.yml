@@ -5,11 +5,16 @@ channels:
 
 dependencies:
   - python=3.11
+  - pyqt=5.15.9
+  - pyqtwebengine=5.15.9
   - pip
   - pip:
-      - flet
+      # - flet
+      # - streamlit
       - yfinance
       - scikit-learn
       - matplotlib
+      - plotly
+      # - kaleido
       - pytest
       - pyinstaller

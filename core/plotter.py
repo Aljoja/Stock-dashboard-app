@@ -1,31 +1,42 @@
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import pandas as pd
-import os
+# import os
 
-def plot_stock_data(data: pd.DataFrame, ticker: str) -> str:
+def plot_stock_data_html(data: pd.DataFrame, ticker: str) -> str:
     """
-    Plot the stock's closing price history and save it as an image.
+    Create a Plotly figure of stock closing prices.
 
     Args:
         data (pd.DataFrame): Historical stock data.
         ticker (str): Stock ticker symbol.
 
     Returns:
-        str: Path to the saved plot image.
+        str: Path to the saved HTML plot.
     """
-    plt.figure(figsize=(10, 5))
-    plt.plot(data.index, data['Close'], label="Close Price")
-    plt.title(f"{ticker} Closing Price History")
-    plt.xlabel("Date")
-    plt.ylabel("Price (USD)")
-    plt.legend()
-    plt.grid(True)
+    fig = go.Figure()
 
-    # Save plot to a file
-    output_dir = "plots"
-    os.makedirs(output_dir, exist_ok=True)
-    file_path = os.path.join(output_dir, f"{ticker}_plot.png")
-    plt.savefig(file_path)
-    plt.close()
+    fig.add_trace(go.Scatter(
+        x=data.index,
+        y=data["Close"],
+        mode="lines",
+        name="Close Price"
+        # line=dict(color="royalblue", width=2)
+    ))
 
-    return file_path
+    fig.update_layout(
+        title=f"{ticker} Closing Price History",
+        xaxis_title="Date",
+        yaxis_title="Price (USD)",
+        template="plotly_white",
+        hovermode="x unified",
+        width=700,
+        height=500
+    )
+
+    # Save plot to an HTML file
+    # output_dir = "plots"
+    # os.makedirs(output_dir, exist_ok=True)
+    # file_path = os.path.join(output_dir, f"{ticker}_plot.png")
+    # fig.write_image(file_path)
+
+    return fig.to_html(include_plotlyjs = "cdn")
